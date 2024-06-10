@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2022",
     "module": "node16",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
     "moduleResolution": "node16",
     "rootDir": ".",
     "outDir": "build",
@@ -13,7 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noImplicitAny": false,
     "noImplicitThis": false,

@@ -11,13 +11,14 @@ coverage
 
 # Transpiled files
 build/
+dist/
 
 # VS Code
 .vscode
 !.vscode/tasks.js
 
-# JetBrains IDEs
-.idea/
+# Parcel cache
+.parcel-cache/
 
 # Optional npm cache directory
 .npm

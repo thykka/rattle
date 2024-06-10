@@ -1,35 +1,37 @@
-/**
- * Some predefined delay values (in milliseconds).
- */
-export enum Delays {
-  Short = 500,
-  Medium = 2000,
-  Long = 5000,
-}
+import { System, World } from '@jakeklassen/ecs';
+import { Position } from './components/position.js';
+import { Health } from './components/health.js';
+import { getTime } from './utils/time.js';
+import { CanvasRenderer } from './systems/canvas-renderer.js';
+import { Input } from './systems/input.js';
+import { Vector2d } from './vector2d.js';
+import { PlayerController } from './systems/player-controller.js';
 
-/**
- * Returns a Promise<string> that resolves after a given time.
- *
- * @param {string} name - A name.
- * @param {number=} [delay=Delays.Medium] - A number of milliseconds to delay resolution of the Promise.
- * @returns {Promise<string>}
- */
-function delayedHello(
-  name: string,
-  delay: number = Delays.Medium
-): Promise<string> {
-  return new Promise((resolve: (value?: string) => void) =>
-    setTimeout(() => resolve(`Hello, ${name}`), delay)
-  );
-}
+const world = new World();
 
-// Please see the comment in the .eslintrc.json file about the suppressed rule!
-// Below is an example of how to use ESLint errors suppression. You can read more
-// at https://eslint.org/docs/latest/user-guide/configuring/rules#disabling-rules
+const canvas = document.querySelector('canvas#rattle') as HTMLCanvasElement;
+world.addSystem(new Input(canvas));
+world.addSystem(new CanvasRenderer(canvas));
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-// prettier-ignore
-export async function greeter(name: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-  // The name parameter should be of type string. Any is used only to trigger the rule.
-  return await delayedHello(name, Delays.Long);
-}
+world.addSystem(new PlayerController());
+
+const rat = world.createEntity();
+world.addEntityComponents(
+  rat,
+  new Position(new Vector2d(canvas.width / 2, canvas.height / 2)),
+  new Health(10)
+);
+const enemy = world.createEntity();
+world.addEntityComponents(enemy, new Position(), new Health(1));
+
+let lastUpdateMs = getTime();
+
+const frame = (timeMs: number) => {
+  const deltaTimeMs = timeMs - lastUpdateMs;
+  lastUpdateMs = timeMs;
+  world.updateSystems(deltaTimeMs);
+
+  setTimeout(() => frame(getTime()), 1000 / 2);
+};
+
+frame(getTime());
