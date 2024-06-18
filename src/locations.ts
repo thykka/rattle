@@ -1,4 +1,4 @@
-import { MachineState, step as stepMachine } from './machines.js';
+import { MachineId, MachineState, step as stepMachine } from './machines.js';
 import { PlayerState } from './player.js';
 
 export enum LocationType {
@@ -50,7 +50,7 @@ export type LocationState = LocationAsset & {
   rent: number;
   traffic: number;
   wealth: number;
-  machines: string[]; // ids of installed machines
+  machines: MachineId[]; // ids of installed machines
 };
 
 const getCompetition = (
@@ -87,15 +87,18 @@ export const init = (
   return location;
 };
 
-export const attach = (location: LocationState, player: PlayerState) => {
-  if (player.locations[location.type])
-    throw new Error('Already have location: ' + location.type);
-
+const update = (location: LocationState, player: PlayerState) => {
   location.competition = getCompetition(location, player);
   location.rent = getRent(location, player);
   location.traffic = getTraffic(location, player);
   location.wealth = getWealth(location, player);
+};
 
+export const attach = (location: LocationState, player: PlayerState) => {
+  if (player.locations[location.type])
+    throw new Error('Already have location: ' + location.type);
+
+  update(location, player);
   player.locations[location.type] = location;
 };
 
@@ -104,6 +107,7 @@ export const step = (
   player: PlayerState,
   deltaTime: number
 ): void => {
+  update(location, player);
   location.machines
     .map((id): MachineState => player.machines[id])
     .forEach((machine) => stepMachine(machine, location, player, deltaTime));

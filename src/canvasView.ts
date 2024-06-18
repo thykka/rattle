@@ -1,38 +1,51 @@
 import { PlayerState } from './player.js';
 import { LocationAssets } from './locations.js';
-import { ContractAssets } from './contracts.js';
-import { MachineAssets } from './machines.js';
-import { ProductAssets } from './products.js';
+import { init as initContract } from './contracts.js';
+import { init as initMachine } from './machines.js';
+import { init as initProduct } from './products.js';
 
 export const init = (element: HTMLElement) => {
   return {
     draw: (player: PlayerState) => {
-      console.clear();
-      console.table(player);
-      const unlockedContracts = [...player.unlockedContracts.keys()].map(
-        (contractType) => ContractAssets[contractType]
-      );
-      console.table(unlockedContracts);
       const contracts = Object.entries(player.contracts).map(
         ([contractType, contractState]) => contractState
       );
-      console.table(contracts);
       const locations = Object.entries(player.locations).map(
         ([locationType, locationState]) => locationState
       );
-      console.table(locations);
-      const machines = [...player.unlockedMachines.keys()].map(
-        (machineType) => MachineAssets[machineType]
-      );
-      console.table(machines);
-      const unlockedMachines = Object.entries(player.machines).map(
+      const machines = Object.entries(player.machines).map(
         ([machineType, machineState]) => machineState
       );
-      console.table(unlockedMachines);
-      const unlockedProducts = [...player.unlockedProducts.keys()].map(
-        (productType) => ProductAssets[productType]
+      const unlockedContracts = [...player.unlockedContracts.keys()].map(
+        (contractType) => initContract(contractType)
       );
-      console.table(unlockedProducts);
+      const unlockedMachines = [...player.unlockedMachines.keys()].map(
+        (machineType) => initMachine(machineType)
+      );
+      const unlockedProducts = [...player.unlockedProducts.keys()].map(
+        (productType) => initProduct(productType)
+      );
+      console.clear();
+      console.log('player', player);
+      console.log(
+        'contracts',
+        ...contracts,
+        '\navailable contracts',
+        ...unlockedContracts
+      );
+      console.log('locations', ...locations);
+      console.log(
+        'machines',
+        ...machines,
+        '\navailable machines',
+        ...unlockedMachines
+      );
+      console.log(
+        'products',
+        ...machines.flatMap((machine) => machine.products),
+        '\navailable products',
+        ...unlockedProducts
+      );
     },
   };
 };

@@ -1,4 +1,6 @@
-import { PlayerState } from './player.js';
+import { LocationState } from './locations.js';
+import { MachineId, MachineState, stockProduct } from './machines.js';
+import { PlayerState, modifyMoney } from './player.js';
 
 export enum ProductTag {
   Drink,
@@ -50,8 +52,9 @@ export const ProductAssets: Partial<Record<string, ProductAsset>> = {
 };
 
 export type ProductState = ProductAsset & {
+  type: ProductType;
   stackSize: number; // how many products remain in stack
-  buyPrice: number;
+  buyPrice: number; // TODO: this needs to be moved into playerState.buyPrice[productType] or something, the price for all products of a certain type is the same
   sellPrice: number;
 };
 
@@ -62,6 +65,7 @@ export const init = (
   const asset = newAsset ?? ProductAssets[type];
   if (!asset) throw new Error('Unknown product: ' + type);
   const product: ProductState = {
+    type,
     ...asset,
     stackSize: asset.baseStackSize,
     buyPrice: asset.baseBuyPrice,
@@ -80,8 +84,30 @@ const getSellPrice = (product: ProductState, player: PlayerState): number => {
   return product.baseSellPrice;
 };
 
-export const attach = (product: ProductState, player: PlayerState) => {
+const update = (product: ProductState, player: PlayerState) => {
   product.stackSize = getStackSize(product, player);
   product.buyPrice = getBuyPrice(product, player);
   product.sellPrice = getSellPrice(product, player);
+};
+
+export const attach = (
+  product: ProductState,
+  machine: MachineId,
+  player: PlayerState
+) => {
+  if (!player.unlockedProducts.get(product.type))
+    throw new Error('Product is locked: ' + product.title);
+  update(product, player);
+  modifyMoney(-product.buyPrice, player);
+  stockProduct(product, machine, player);
+};
+
+export const step = (
+  product: ProductState,
+  machine: MachineState,
+  location: LocationState,
+  player: PlayerState,
+  deltaTime: number
+) => {
+  update(product, player);
 };

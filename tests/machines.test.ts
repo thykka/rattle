@@ -3,7 +3,6 @@ import { MachineType, init } from '../src/machines.js';
 
 const testMachine1: MachineAsset = {
   title: 'Test Machine',
-  baseAvailable: 0,
   baseBuyPrice: 0,
   baseMaxProducts: 1,
   baseMaxMoney: 1,

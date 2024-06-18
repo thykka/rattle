@@ -1,6 +1,6 @@
 import { PlayerState, step as playerStep } from './player.js';
 
-const FPS = 1;
+const FPS = 0.3;
 
 export const init = (
   player: PlayerState,

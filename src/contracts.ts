@@ -32,7 +32,7 @@ export const ContractAssets: Record<string, ContractAsset> = {
   [ContractType.StartBusiness]: {
     title: 'Starter kit',
     baseBuyPrice: 1,
-    baseDailyPrice: 0,
+    baseDailyPrice: 0.01,
     providesLocations: [LocationType.Home],
     unlocksMachines: [MachineType.ToyVendingMachine],
     unlocksProducts: [ProductType.BubblegumBall],
@@ -84,29 +84,33 @@ export const init = (
   return contract;
 };
 
+const update = (contract: ContractState, player: PlayerState) => {
+  contract.buyPrice = getBuyPrice(contract, player);
+  contract.rent = getRent(contract, player);
+};
+
 export const attach = (contract: ContractState, player: PlayerState) => {
   if (player.contracts[contract.type])
     throw new Error('Already have contract: ' + contract.type);
 
-  contract.buyPrice = getBuyPrice(contract, player);
-  contract.rent = getRent(contract, player);
+  update(contract, player);
 
-  if (player.money < contract.buyPrice)
-    throw new Error(
-      `Not enough money for contract ${player.money}/${contract.buyPrice}`
-    );
+  modifyMoney(-contract.buyPrice, player);
 
   player.contracts[contract.type] = contract;
-  contract.unlocksContracts?.forEach((contractType) => {
-    player.unlockedContracts.set(contractType, true);
-  });
+  contract.unlocksContracts?.forEach((contractType) =>
+    player.unlockedContracts.set(contractType, true)
+  );
+  contract.unlocksMachines?.forEach((machineType) =>
+    player.unlockedMachines.set(machineType, true)
+  );
+  contract.unlocksProducts?.forEach((productType) =>
+    player.unlockedProducts.set(productType, true)
+  );
   contract.providesLocations?.forEach((locationType) => {
     if (!player.locations[locationType]) {
       attachLocation(initLocation(locationType), player);
     }
-  });
-  contract.unlocksMachines?.forEach((machineType) => {
-    player.unlockedMachines.set(machineType, true);
   });
 };
 
@@ -115,6 +119,7 @@ export const step = (
   player: PlayerState,
   deltaTime: number
 ): void => {
+  update(contract, player);
   try {
     modifyMoney((-contract.rent * deltaTime) / 1000, player);
   } catch (e) {
