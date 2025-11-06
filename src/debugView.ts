@@ -4,19 +4,11 @@ import { init as initContract } from './contracts.js';
 import { init as initMachine } from './machines.js';
 import { init as initProduct } from './products.js';
 
-function formatNumber(num: number): string {
-  return num.toPrecision(3);
-}
-
 export const init = (element: HTMLElement) => {
   const canvas = document.createElement('canvas');
-  canvas.width = 640;
-  canvas.height = 480;
   element.appendChild(canvas);
-  const ctx = canvas.getContext('2d');
   return {
     draw: (player: PlayerState) => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
       const contracts = Object.entries(player.contracts).map(
         ([contractType, contractState]) => contractState
       );
@@ -35,12 +27,27 @@ export const init = (element: HTMLElement) => {
       const unlockedProducts = [...player.unlockedProducts.keys()].map(
         (productType) => initProduct(productType)
       );
-      // draw player
-      ctx.fillText(formatNumber(player.money), 16, 16);
-      // draw contracts, unlockedContracts
-      // draw locations
-      // draw machines, unlockedMachines
-      // draw products, unlockedProducts
+      console.clear();
+      console.log('player', player);
+      console.log(
+        'contracts',
+        ...contracts,
+        '\navailable contracts',
+        ...unlockedContracts
+      );
+      console.log('locations', ...locations);
+      console.log(
+        'machines',
+        ...machines,
+        '\navailable machines',
+        ...unlockedMachines
+      );
+      console.log(
+        'products',
+        ...machines.flatMap((machine) => machine.products),
+        '\navailable products',
+        ...unlockedProducts
+      );
     },
   };
 };
