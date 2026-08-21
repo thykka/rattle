@@ -6,6 +6,7 @@ import { Product } from './product.js';
 import { Slot } from './slot.js';
 import { Warehouse } from './warehouse.js';
 import { World } from './world.js';
+import { Location } from './location.js';
 
 export type ModifierState = Record<string, unknown>;
 
@@ -23,7 +24,7 @@ export type ModifierData = CommonData & {
   defaultState: ModifierState;
 };
 
-export class Modifier extends StateData {
+export class Modifier extends StateData<ModifierData> {
   state = {};
 
   constructor(dataId: string, state?: ModifierState) {

@@ -1,4 +1,4 @@
-import type { ProductData } from '../product.js';
+import type { ProductOrderData, ProductData } from '../product.js';
 
 export const Products: ProductData[] = [
   {
@@ -6,19 +6,34 @@ export const Products: ProductData[] = [
     title: 'Bubblegum',
     slotWidth: 1,
     slotHeight: 1,
-    stackSize: 20,
-    orderPrice: 10,
+    stackSize: 10,
     retailPrice: 1,
-    orderDuration: 5,
   },
   {
     id: 'sb',
     title: 'Superball',
-    slotWidth: 1,
-    slotHeight: 1,
-    stackSize: 10,
-    orderPrice: 5,
+    slotWidth: 2,
+    slotHeight: 2,
+    stackSize: 20,
     retailPrice: 2,
-    orderDuration: 10,
+  },
+];
+
+export const ProductOrders: ProductOrderData[] = [
+  {
+    id: 'p-bg',
+    title: 'Bubblegum crate',
+    productId: 'bg',
+    productStacks: 3,
+    price: 8,
+    duration: 5,
+  },
+  {
+    id: 'p-sb',
+    title: 'Superball box',
+    productId: 'sb',
+    productStacks: 4,
+    price: 8,
+    duration: 10,
   },
 ];

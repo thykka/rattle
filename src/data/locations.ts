@@ -6,9 +6,9 @@ export const Locations: LocationData[] = [
     title: 'Test location',
     width: 2,
     height: 3,
-    traffic: 1,
+    traffic: 0.5,
     wealth: 1,
-    rent: 0,
+    rent: 0.01,
     competition: 0,
   },
 ];

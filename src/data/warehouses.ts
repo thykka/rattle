@@ -6,6 +6,8 @@ export const Warehouses: WarehouseData[] = [
     title: 'Tiny warehouse',
     width: 3,
     height: 1,
-    stackLimit: 3,
+    stackLimit: 100,
+    productLimit: 3,
+    machineLimit: 1,
   },
 ];

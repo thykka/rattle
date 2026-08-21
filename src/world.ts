@@ -1,9 +1,14 @@
-import { StateData } from './data.js';
+import { type CommonData, StateData } from './data.js';
 import { Location } from './location.js';
 import { Modifier } from './modifier.js';
 import { Warehouse } from './warehouse.js';
+import { Worlds } from './data/worlds.js';
 
-export class World extends StateData {
+export type WorldData = CommonData & {
+  initialMoney: number;
+};
+
+export class World extends StateData<WorldData> {
   locations: Location[] = [];
   warehouses: Warehouse[] = [];
   modifiers: Modifier[] = [];
@@ -14,6 +19,11 @@ export class World extends StateData {
   currentTime: number;
   lastTick: number;
   deltaTick: number;
+
+  constructor(worldId: string) {
+    super(worldId, Worlds);
+    this.money = this.data.initialMoney;
+  }
 
   update() {
     this.currentTime = performance.now() / 1000;
