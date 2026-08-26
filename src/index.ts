@@ -18,6 +18,7 @@ setTimeout(() => {
   setTimeout(() => {
     const product = world.warehouses[0].products[0];
     const slot = world.locations[0].machines[0].slots[0];
+    // TODO: better interface for moving stuff around?
     slot.addProduct(product.dataId, slot.data.stackLimit);
     product.stackAmount -= slot.data.stackLimit;
   }, 2000);
