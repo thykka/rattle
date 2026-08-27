@@ -12,6 +12,7 @@ import { Money } from '../components/Money.js';
 import { Parent } from '../components/Parent.js';
 import { Size } from '../components/Size.js';
 import { Contents } from '../components/Contents.js';
+import { Name } from '../components/Name.js';
 
 const currency = (v: number) => v.toFixed(2) + '€';
 const percent = (v: number) => (100 * v).toFixed(2) + '%';
@@ -32,7 +33,16 @@ export class DebugRenderer extends System {
   }
 
   public update(world: World) {
-    const output = ['Products'];
+    const output = ['Player'];
+    for (const [entity, components] of world.view(Money, Name)) {
+      const rows = [];
+      rows.push(
+        ['name', components.get(Name).text].join(': '),
+        ['money', currency(components.get(Money).value)].join(': ')
+      );
+      output.push(entity + ' ' + rows.join('\n  ') + '\n');
+    }
+    output.push('Products');
     for (const [entity, components] of world.view(ProductDataId)) {
       const rows = [];
       const sprite = components.get(Sprite);
