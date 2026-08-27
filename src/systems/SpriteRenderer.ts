@@ -1,7 +1,10 @@
 import { System, type World } from '@jakeklassen/ecs';
-import { Sprite } from '../components/sprite.js';
-import { Position } from '../components/position.js';
-import { Size } from '../components/size.js';
+import { Sprite } from '../components/Sprite.js';
+import { Position } from '../components/Position.js';
+
+import { allData } from '../data/registry.js';
+
+const Sprites = allData('sprites');
 
 export class SpriteRenderer extends System {
   #ctx: CanvasRenderingContext2D;
@@ -17,26 +20,22 @@ export class SpriteRenderer extends System {
   }
 
   public update(world: World, dt: number) {
-    for (const [entity, components] of world.view(Sprite, Position, Size)) {
-      this.drawSprite(
-        components.get(Sprite),
-        components.get(Position),
-        components.get(Size)
-      );
+    for (const [entity, components] of world.view(Sprite, Position)) {
+      this.drawSprite(components.get(Sprite), components.get(Position));
     }
   }
 
-  drawSprite(sprite: Sprite, position: Position, size: Size): void {
+  drawSprite(sprite: Sprite, position: Position): void {
     this.#ctx.drawImage(
       this.spriteSheet,
-      sprite.position.x * this.tileSize,
-      sprite.position.y * this.tileSize,
-      sprite.size.x * this.tileSize,
-      sprite.size.y * this.tileSize,
+      sprite.sx * this.tileSize,
+      sprite.sy * this.tileSize,
+      sprite.sw * this.tileSize,
+      sprite.sh * this.tileSize,
       position.x,
       position.y,
-      size.x,
-      size.y
+      sprite.sw * this.tileSize,
+      sprite.sh * this.tileSize
     );
   }
 }

@@ -5,7 +5,7 @@ export class Timer extends Component {
     public duration: number,
     public tickRate = 1000,
     public startTime = performance.now(),
-    public currentTime = performance.now(),
+    public currentTime = startTime,
     public delta = 0,
     public progress = 0,
     public completed = false

@@ -1,12 +1,30 @@
 import { System, type World } from '@jakeklassen/ecs';
-import { Money } from '../components/money.js';
-import { Title } from '../components/title.js';
-import { Timer } from '../components/timer.js';
-import { Product } from '../components/product.js';
-import { Position } from '../components/position.js';
+import { Price } from '../components/Price.js';
+import {
+  MachineDataId,
+  ProductDataId,
+  SlotDataId,
+} from '../components/DataId.js';
+import { Amount } from '../components/Amount.js';
+import { Sprite } from '../components/Sprite.js';
+import { Shape } from '../components/Shape.js';
+import { Money } from '../components/Money.js';
+import { Parent } from '../components/Parent.js';
+import { Size } from '../components/Size.js';
+import { Contents } from '../components/Contents.js';
 
 const currency = (v: number) => v.toFixed(2) + '€';
 const percent = (v: number) => (100 * v).toFixed(2) + '%';
+
+const keyValue = (
+  component,
+  key: string = 'value',
+  format?: (unknown) => string
+) => {
+  return [key, format ? format(component[key]) : (component[key] ?? '??')].join(
+    ': '
+  );
+};
 
 export class DebugRenderer extends System {
   constructor(private readonly context: HTMLElement) {
@@ -14,25 +32,47 @@ export class DebugRenderer extends System {
   }
 
   public update(world: World) {
-    const output = [];
-    for (const [entity, components] of world.view(Money, Title, Timer)) {
+    const output = ['Products'];
+    for (const [entity, components] of world.view(ProductDataId)) {
       const rows = [];
-      rows.push(components.get(Title).text);
-      rows.push(currency(components.get(Money).amount));
-      rows.push(percent(components.get(Timer).progress));
-      output.push(entity, '  ' + rows.join('\n  '));
+      const sprite = components.get(Sprite);
+      rows.push(
+        keyValue(components.get(ProductDataId), 'id'),
+        keyValue(components.get(Amount)),
+        keyValue(components.get(Price), 'value', currency),
+        keyValue(components.get(Shape), 'id'),
+        ['sprite', [sprite.sx, sprite.sy, sprite.sw, sprite.sh].join(',')].join(
+          ': '
+        )
+      );
+      output.push(entity + ' ' + rows.join('\n  ') + '\n');
     }
-    for (const [entity, components] of world.view(Product)) {
+    output.push('Machines');
+    for (const [machineEntity, components] of world.view(MachineDataId)) {
       const rows = [];
-      const product = components.get(Product);
-      rows.push(`${product.id}: ${currency(product.salePrice.amount)}`);
-      output.push(entity, '  ' + rows.join('\n  '));
-    }
-    for (const [entity, components] of world.view(Position)) {
-      const rows = [];
-      const position = components.get(Position);
-      rows.push(`x${position.x} y${position.y}`);
-      output.push(entity, '  ' + rows.join('\n  '));
+      rows.push(
+        keyValue(components.get(MachineDataId), 'id'),
+        keyValue(components.get(Money), 'value', currency),
+        'Slots:'
+      );
+      for (const [slotEntity, slotComponents] of world.view(
+        SlotDataId,
+        Parent
+      )) {
+        const slotRow = [];
+        const parent = slotComponents.get(Parent);
+        if (parent.entity !== machineEntity) continue;
+        const size = slotComponents.get(Size);
+        const shape = slotComponents.get(Shape);
+        const contents = slotComponents.get(Contents);
+        slotRow.push(
+          `shape: ${shape.id}`,
+          `size: ${size.h}x${size.w}`,
+          keyValue(contents, 'item')
+        );
+        rows.push(slotEntity + ' ' + slotRow.join('\n    ') + '\n');
+      }
+      output.push(machineEntity + ' ' + rows.join('\n  ') + '\n');
     }
     this.context.innerText = output.join('\n');
   }

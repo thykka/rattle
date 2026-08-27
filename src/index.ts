@@ -1,37 +1,22 @@
 import { World } from '@jakeklassen/ecs';
-import { Money } from './components/money.js';
+import { Money } from './components/Money.js';
 import { DebugRenderer } from './systems/DebugRenderer.js';
-import { Title } from './components/title.js';
-import { Timer } from './components/timer.js';
-import { TimerSystem } from './systems/TimerSystem.js';
-import { Product } from './components/product.js';
-import { Sprite } from './components/sprite.js';
 import { SpriteRenderer } from './systems/SpriteRenderer.js';
-import { Position } from './components/position.js';
-import { Size } from './components/size.js';
+import { spawnProductStack } from './factories/Product-factory.js';
+import { Name } from './components/Name.js';
+import { spawnMachine } from './factories/Machine-factory.js';
 
 const world = new World();
 globalThis.world = world;
 
 const player = world.createEntity();
 
-world.addEntityComponents(
-  player,
-  new Timer(10000, 1000 / 30),
-  new Money(10),
-  new Title('Bozo')
-);
+world.addEntityComponents(player, new Name('Bozo'), new Money(10));
 
-const bubblegum = world.createEntity();
-world.addEntityComponents(
-  bubblegum,
-  new Product('test'),
-  new Sprite('bubblegum'),
-  new Position(48, 32),
-  new Size(64, 64)
-);
+spawnProductStack(world, 'bubblegum', 64, 32);
+spawnProductStack(world, 'bouncyball', 96, 48);
 
-world.addSystem(new TimerSystem());
+spawnMachine(world, 'gumball-row');
 
 const spriteCanvas = document.createElement('canvas');
 document.body.appendChild(spriteCanvas);
