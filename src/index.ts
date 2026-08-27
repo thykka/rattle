@@ -16,7 +16,7 @@ world.addEntityComponents(player, new Name('Bozo'), new Money(10));
 spawnProductStack(world, 'bubblegum', 64, 32);
 spawnProductStack(world, 'bouncyball', 96, 48);
 
-spawnMachine(world, 'gumball-row');
+spawnMachine(world, 'gumball-row', player /* TODO: warehouse/location */);
 
 const spriteCanvas = document.createElement('canvas');
 document.body.appendChild(spriteCanvas);

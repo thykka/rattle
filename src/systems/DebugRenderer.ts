@@ -1,18 +1,14 @@
 import { System, type World } from '@jakeklassen/ecs';
 import { Price } from '../components/Price.js';
-import {
-  MachineDataId,
-  ProductDataId,
-  SlotDataId,
-} from '../components/DataId.js';
+import { MachineDataId, ProductDataId } from '../components/DataId.js';
 import { Amount } from '../components/Amount.js';
 import { Sprite } from '../components/Sprite.js';
 import { Shape } from '../components/Shape.js';
 import { Money } from '../components/Money.js';
-import { Parent } from '../components/Parent.js';
 import { Size } from '../components/Size.js';
 import { Contents } from '../components/Contents.js';
 import { Name } from '../components/Name.js';
+import { Children } from '../components/Children.js';
 
 const currency = (v: number) => v.toFixed(2) + '€';
 const percent = (v: number) => (100 * v).toFixed(2) + '%';
@@ -65,10 +61,23 @@ export class DebugRenderer extends System {
         keyValue(components.get(Money), 'value', currency),
         'Slots:'
       );
+      const children = components.get(Children).entities;
+      for (const slotEntity of children) {
+        const slotComponents = world.getEntityComponents(slotEntity);
+        const slotRow = [];
+        const size = slotComponents.get(Size);
+        slotRow.push(
+          `shape: ${slotComponents.get(Shape).id}`,
+          `size: ${size.w}x${size.h}`,
+          `item: ${slotComponents.get(Contents).item}`
+        );
+        rows.push(slotEntity + ' ' + slotRow.join('\n    ') + '\n');
+      }
+      /*
       for (const [slotEntity, slotComponents] of world.view(
         SlotDataId,
         Parent
-      )) {
+        )) {
         const slotRow = [];
         const parent = slotComponents.get(Parent);
         if (parent.entity !== machineEntity) continue;
@@ -82,6 +91,7 @@ export class DebugRenderer extends System {
         );
         rows.push(slotEntity + ' ' + slotRow.join('\n    ') + '\n');
       }
+      */
       output.push(machineEntity + ' ' + rows.join('\n  ') + '\n');
     }
     this.context.innerText = output.join('\n');
