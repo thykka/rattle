@@ -1,36 +1,47 @@
-import { init as initPlayer } from './player.js';
-import { init as initView } from './canvasView.js';
-import { init as initLoop } from './loop.js';
-import { ProductType, init as initProduct } from './products.js';
-import {
-  ContractType,
-  init as initContract,
-  attach as attachContract,
-} from './contracts.js';
-import {
-  init as initMachine,
-  attach as attachMachine,
-  MachineType,
-  stockProduct,
-} from './machines.js';
-import { LocationType } from './locations.js';
+import { World } from '@jakeklassen/ecs';
+import { Money } from './components/Money.js';
+import { DebugRenderer } from './systems/DebugRenderer.js';
+import { SpriteRenderer } from './systems/SpriteRenderer.js';
+import { spawnProductStack } from './factories/Product-factory.js';
+import { Name } from './components/Name.js';
+import { spawnMachine } from './factories/Machine-factory.js';
+import { InputCursor } from './systems/input/InputCursor.js';
+import { spawnCursor } from './factories/input/Cursor-factory.js';
 
-const player = initPlayer();
-const view = initView(document.body);
-const loop = initLoop(player, view.draw);
+const world = new World();
+globalThis.world = world;
 
-loop.start();
+const player = world.createEntity();
 
-attachContract(initContract(ContractType.StartBusiness), player);
+world.addEntityComponents(player, new Name('Bozo'), new Money(10));
 
-attachMachine(
-  initMachine(MachineType.ToyVendingMachine),
-  LocationType.Home,
-  player
+spawnProductStack(world, 'bubblegum', 64, 32);
+spawnProductStack(world, 'bouncyball', 96, 48);
+
+spawnMachine(world, 'gumball-row', player /* TODO: warehouse/location */);
+
+spawnCursor(world);
+world.addSystem(new InputCursor(globalThis));
+
+const spriteCanvas = document.createElement('canvas');
+document.body.appendChild(spriteCanvas);
+const spriteSheet = document.querySelector<HTMLImageElement>(
+  'img[data-spritesheet]'
 );
+world.addSystem(new SpriteRenderer(spriteCanvas, spriteSheet));
 
-stockProduct(
-  initProduct(ProductType.BubblegumBall),
-  Object.keys(player.machines)[0],
-  player
-);
+const debugElement = document.createElement('div');
+debugElement.style.whiteSpace = 'pre-wrap';
+debugElement.style.fontFamily = 'monospace';
+document.body.appendChild(debugElement);
+world.addSystem(new DebugRenderer(debugElement));
+
+let lastUpdate = performance.now();
+const update = (currentTime: DOMHighResTimeStamp) => {
+  const deltaTime = Math.min(1000, currentTime - lastUpdate);
+  world.updateSystems(deltaTime);
+  lastUpdate = currentTime;
+  requestAnimationFrame(update);
+};
+
+requestAnimationFrame(update);

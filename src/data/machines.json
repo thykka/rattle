@@ -1,0 +1,14 @@
+{
+  "gumball-single": {
+    "slots": [["ball-s"]]
+  },
+  "gumball-row": {
+    "slots": [["ball-s", "ball-s", "ball-s", "ball-s"]]
+  },
+  "gachapon-small": {
+    "slots": [["ball-m"]]
+  },
+  "gachapon-large": {
+    "slots": [["ball-l"]]
+  }
+}

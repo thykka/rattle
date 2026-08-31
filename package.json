@@ -3,15 +3,18 @@
   "version": "1.0.0",
   "description": "Idle vending machine game",
   "type": "module",
+  "source": "src/index.html",
   "engines": {
-    "node": ">= 20.9 < 21"
+    "node": ">= 24.13.1"
+  },
+  "targets": {
+    "default": {
+      "includeNodeModules": true
+    }
   },
   "scripts": {
-    "start": "npx parcel src/index.html",
+    "start": "rm -rf .parcel-cache && npx parcel src/index.html",
     "prebuild": "npm run lint",
-    "build": "tsc -p tsconfig.json",
-    "build:watch": "tsc -w -p tsconfig.json",
-    "build:release": "npm run clean && tsc -p tsconfig.release.json",
     "lint": "eslint . --ext .ts --ext .mts",
     "prettier": "prettier --config .prettierrc --write .",
     "test": "jest --coverage",

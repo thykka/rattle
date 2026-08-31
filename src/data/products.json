@@ -1,0 +1,14 @@
+{
+  "bubblegum": {
+    "salePrice": 1,
+    "stackSize": 50,
+    "sprite": "bubblegum",
+    "shape": "ball"
+  },
+  "bouncyball": {
+    "salePrice": 2,
+    "stackSize": 25,
+    "sprite": "test",
+    "shape": "ball"
+  }
+}
