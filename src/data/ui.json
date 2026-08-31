@@ -1,0 +1,231 @@
+{
+  "main": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "layout": "grid-h",
+        "contents": [
+          {
+            "title": "Clock"
+          },
+          {
+            "title": "Resources"
+          },
+          {
+            "title": "Menu"
+          }
+        ]
+      },
+      {
+        "view": "primaryView",
+        "layout": "grid-v",
+        "defaultView": "shop",
+        "contents": []
+      },
+      {
+        "layout": "grid-h",
+        "contents": [
+          {
+            "setView": "primaryView",
+            "setComponent": "shop"
+          },
+          {
+            "setView": "primaryView",
+            "setComponent": "orders"
+          },
+          {
+            "setView": "primaryView",
+            "setComponent": "storage"
+          },
+          {
+            "setView": "primaryView",
+            "setComponent": "locations"
+          },
+          {
+            "setView": "primaryView",
+            "setComponent": "machine"
+          }
+        ]
+      }
+    ]
+  },
+  "shop": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Shop"
+      },
+      {
+        "layout": "grid-h",
+        "contents": [
+          {
+            "setView": "shopView",
+            "setComponent": "shopLocations"
+          },
+          {
+            "setView": "shopView",
+            "setComponent": "shopMachines"
+          },
+          {
+            "setView": "shopView",
+            "setComponent": "shopProducts"
+          },
+          {
+            "setView": "shopView",
+            "setComponent": "shopUpgrades"
+          }
+        ]
+      },
+      {
+        "view": "shopView",
+        "defaultView": "shopLocations",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  },
+  "shopLocations": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Shop / Locations"
+      },
+      {
+        "view": "shopLocationsList",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  },
+  "shopMachines": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Shop / Machines"
+      },
+      {
+        "view": "shopMachinesList",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  },
+  "shopProducts": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Shop / Products"
+      },
+      {
+        "view": "shopProductsList",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  },
+  "shopUpgrades": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Shop / Upgrades"
+      },
+      {
+        "view": "shopUpgradesList",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  },
+  "orders": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Orders"
+      },
+      {
+        "view": "ordersList",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  },
+  "storage": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Storage"
+      },
+      {
+        "layout": "grid-h",
+        "contents": [
+          {
+            "setView": "storageView",
+            "setComponent": "storageMachines"
+          },
+          {
+            "setView": "storageView",
+            "setComponent": "storageProducts"
+          }
+        ]
+      },
+      {
+        "view": "storageView",
+        "defaultView": "storageMachines",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  },
+  "storageMachines": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Storage / Machines"
+      },
+      {
+        "view": "storageMachinesView",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  },
+  "storageProducts": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Storage / Products"
+      },
+      {
+        "view": "storageProductsView",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  },
+  "locations": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Locations"
+      },
+      {
+        "view": "locationsView",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  },
+  "machine": {
+    "layout": "grid-v",
+    "contents": [
+      {
+        "title": "Machine"
+      },
+      {
+        "view": "machineView",
+        "layout": "grid-v",
+        "contents": []
+      }
+    ]
+  }
+}

@@ -7,6 +7,10 @@ import { Name } from './components/Name.js';
 import { spawnMachine } from './factories/Machine-factory.js';
 import { InputCursor } from './systems/input/InputCursor.js';
 import { spawnCursor } from './factories/input/Cursor-factory.js';
+import { ButtonRenderer } from './systems/ui/ButtonRenderer.js';
+import { spawnButton } from './factories/Button-factory.js';
+import { ActionSystem } from './systems/ActionSystem.js';
+import { initView } from './shared/layout.js';
 
 const world = new World();
 globalThis.world = world;
@@ -22,6 +26,32 @@ spawnMachine(world, 'gumball-row', player /* TODO: warehouse/location */);
 
 spawnCursor(world);
 world.addSystem(new InputCursor(globalThis));
+
+world.addSystem(new ActionSystem());
+
+spawnButton(world, {
+  x: 0,
+  y: 0,
+  w: 128,
+  h: 32,
+  label: 'earn-money',
+  action: 'move-money',
+  actionTarget: player,
+});
+
+spawnButton(world, {
+  x: 130,
+  y: 0,
+  w: 128,
+  h: 32,
+  label: 'lose-money',
+  action: 'move-money',
+  actionSource: player,
+});
+
+const buttonsCanvas = document.createElement('canvas');
+document.body.appendChild(buttonsCanvas);
+world.addSystem(new ButtonRenderer(buttonsCanvas));
 
 const spriteCanvas = document.createElement('canvas');
 document.body.appendChild(spriteCanvas);
@@ -45,3 +75,6 @@ const update = (currentTime: DOMHighResTimeStamp) => {
 };
 
 requestAnimationFrame(update);
+
+const view = initView('main');
+document.body.appendChild(view);

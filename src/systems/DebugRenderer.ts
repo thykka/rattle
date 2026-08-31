@@ -9,8 +9,8 @@ import { Size } from '../components/Size.js';
 import { Contents } from '../components/Contents.js';
 import { Name } from '../components/Name.js';
 import { Children } from '../components/Children.js';
-import { Button } from '../components/Button.js';
 import { Position } from '../components/Position.js';
+import { MouseButton } from '../components/MouseButton.js';
 
 const currency = (v: number) => v.toFixed(2) + '€';
 const percent = (v: number) => (100 * v).toFixed(2) + '%';
@@ -32,11 +32,11 @@ export class DebugRenderer extends System {
 
   public update(world: World) {
     const output = ['Cursor'];
-    for (const [entity, components] of world.view(Button, Position)) {
+    for (const [entity, components] of world.view(MouseButton, Position)) {
       const rows = [];
       const pos = components.get(Position);
       rows.push(`${pos.x}, ${pos.y}`);
-      const button = components.get(Button);
+      const button = components.get(MouseButton);
       rows.push(
         `${button.pressed ? 'P' : '-'} ${button.held ? 'H' : '-'} ${button.released ? 'R' : '-'}`
       );

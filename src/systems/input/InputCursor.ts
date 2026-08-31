@@ -1,5 +1,5 @@
 import { System, type World } from '@jakeklassen/ecs';
-import { Button } from '../../components/Button.js';
+import { MouseButton } from '../../components/MouseButton.js';
 import { Position } from '../../components/Position.js';
 
 export class InputCursor extends System {
@@ -18,8 +18,11 @@ export class InputCursor extends System {
   }
 
   update(world: World, dt: number) {
-    for (const [cursorEntity, components] of world.view(Button, Position)) {
-      const button = components.get(Button);
+    for (const [cursorEntity, components] of world.view(
+      MouseButton,
+      Position
+    )) {
+      const button = components.get(MouseButton);
       const position = components.get(Position);
       position.x = this.x;
       position.y = this.y;
