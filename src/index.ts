@@ -5,6 +5,8 @@ import { SpriteRenderer } from './systems/SpriteRenderer.js';
 import { spawnProductStack } from './factories/Product-factory.js';
 import { Name } from './components/Name.js';
 import { spawnMachine } from './factories/Machine-factory.js';
+import { InputCursor } from './systems/input/InputCursor.js';
+import { spawnCursor } from './factories/input/Cursor-factory.js';
 
 const world = new World();
 globalThis.world = world;
@@ -17,6 +19,9 @@ spawnProductStack(world, 'bubblegum', 64, 32);
 spawnProductStack(world, 'bouncyball', 96, 48);
 
 spawnMachine(world, 'gumball-row', player /* TODO: warehouse/location */);
+
+spawnCursor(world);
+world.addSystem(new InputCursor(globalThis));
 
 const spriteCanvas = document.createElement('canvas');
 document.body.appendChild(spriteCanvas);
