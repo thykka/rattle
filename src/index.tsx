@@ -1,3 +1,4 @@
+/*
 import { World } from '@jakeklassen/ecs';
 import { Money } from './components/Money.js';
 import { DebugRenderer } from './systems/DebugRenderer.js';
@@ -11,6 +12,16 @@ import { ButtonRenderer } from './systems/ui/ButtonRenderer.js';
 import { spawnButton } from './factories/Button-factory.js';
 import { ActionSystem } from './systems/ActionSystem.js';
 import { initView } from './shared/layout.js';
+*/
+
+import { createRoot } from 'react-dom/client';
+import { App } from './app.js';
+
+const container = document.getElementById('app');
+const root = createRoot(container);
+root.render(<App />);
+
+/*
 
 const world = new World();
 globalThis.world = world;
@@ -22,7 +33,7 @@ world.addEntityComponents(player, new Name('Bozo'), new Money(10));
 spawnProductStack(world, 'bubblegum', 64, 32);
 spawnProductStack(world, 'bouncyball', 96, 48);
 
-spawnMachine(world, 'gumball-row', player /* TODO: warehouse/location */);
+spawnMachine(world, 'gumball-row', player);
 
 spawnCursor(world);
 world.addSystem(new InputCursor(globalThis));
@@ -78,3 +89,5 @@ requestAnimationFrame(update);
 
 const view = initView('main');
 document.body.appendChild(view);
+
+*/

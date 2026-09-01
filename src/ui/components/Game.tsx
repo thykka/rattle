@@ -1,0 +1,48 @@
+import { game, startLoop, stopLoop } from '../../game.js';
+import { Flex } from './Flex/Flex.js';
+import { GameContext } from '../context/GameContext.jsx';
+import { PlayerStats } from './Player/PlayerStats.jsx';
+import { useEffect, useState } from 'react';
+import { ViewList, ViewPanel, type ViewId } from './View/View.js';
+import { Views } from './views/index.js';
+
+export function Game() {
+  const [currentView, setCurrentView] = useState<ViewId<typeof Views>>('shop');
+  useEffect(() => {
+    startLoop();
+    return () => stopLoop();
+  }, []);
+
+  return (
+    <GameContext.Provider value={game}>
+      <Flex fit clip>
+        <Flex horizontal gap type="section">
+          <Flex center>Clock</Flex>
+          <Flex fit>
+            <PlayerStats />
+          </Flex>
+          <Flex center>Menu</Flex>
+        </Flex>
+        <Flex fit scroll type="section">
+          <ViewPanel views={Views} viewId={currentView} />
+        </Flex>
+        <Flex type="nav">
+          <Flex horizontal gap type="ul">
+            <ViewList
+              views={Views}
+              current={currentView}
+              onChange={setCurrentView}
+              renderItem={({ viewId, view, isActive, select }) => (
+                <Flex fit type="li" key={viewId}>
+                  <Flex pad key={viewId} type="button" onClick={select}>
+                    {view.name}
+                  </Flex>
+                </Flex>
+              )}
+            />
+          </Flex>
+        </Flex>
+      </Flex>
+    </GameContext.Provider>
+  );
+}

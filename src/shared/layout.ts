@@ -39,7 +39,7 @@ function isSetterComponent(c: object): c is SetterComponent {
 }
 function initSetterComponent(c: SetterComponent) {
   const el = document.createElement('button');
-  el.innerText = `${c.setView}>${c.setComponent}`;
+  el.innerText = `${c.setView} / ${c.setComponent}`;
   el.addEventListener('click', () => {
     const viewEl = document.querySelector(`[data-view="${c.setView}"]`);
     viewEl.innerHTML = '';

@@ -1,0 +1,42 @@
+.flex {
+  outline: 1px solid #8884;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.horizontal {
+  flex-direction: row;
+}
+
+.fit {
+  flex-grow: 1;
+}
+
+.pad {
+  padding: var(--unit-spacing, 1em);
+}
+
+.gap {
+  gap: var(--unit-spacing, 1em);
+}
+
+.center {
+  align-items: center;
+  justify-content: center;
+}
+
+.clip {
+  overflow: hidden;
+}
+
+.scroll {
+  overflow: auto;
+}
+

@@ -1,0 +1,26 @@
+:root {
+  --unit: 1rem;
+  --unit-spacing: calc(2 * var(--unit));
+
+  font-family: monospace;
+  font-size: 16px;
+
+  color: #111;
+  background: #eee;
+
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #eee;
+    background: #000;
+  }
+}
+
+#app {
+  display: flex;
+  flex-flow: column nowrap;
+  position: absolute;
+  inset: 0;
+}

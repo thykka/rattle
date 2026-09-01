@@ -4,9 +4,6 @@
   "description": "Idle vending machine game",
   "type": "module",
   "source": "src/index.html",
-  "engines": {
-    "node": ">= 24.13.1"
-  },
   "targets": {
     "default": {
       "includeNodeModules": true
@@ -22,8 +19,11 @@
   },
   "author": "Moses Holmström",
   "devDependencies": {
+    "@parcel/validator-typescript": "^2.16.4",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.13.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
     "@typescript-eslint/eslint-plugin": "^7.11.0",
     "@typescript-eslint/parser": "^7.11.0",
     "eslint": "^8.57.0",
@@ -33,10 +33,13 @@
     "parcel": "^2.12.0",
     "prettier": "^3.3.0",
     "ts-jest": "^29.1.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "typescript-plugin-css-modules": "^5.2.0"
   },
   "dependencies": {
     "@jakeklassen/ecs": "^4.0.6",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "tslib": "~2.6"
   }
 }
