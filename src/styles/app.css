@@ -2,19 +2,33 @@
   --unit: 1rem;
   --unit-spacing: calc(2 * var(--unit));
 
+  --theme-light-color: #111;
+  --theme-light-background: #eee;
+  --theme-dark-color: #eee;
+  --theme-dark-background: #000;
+
+  --theme-invert-color: var(--theme-dark-color);
+  --theme-invert-background: var(--theme-dark-background);
+
+  --theme-color: var(--theme-light-color);
+  --theme-background: var(--theme-light-background);
+
   font-family: monospace;
   font-size: 16px;
 
-  color: #111;
-  background: #eee;
+  color: var(--theme-color);
+  background: var(--theme-background);
 
 }
 
 
 @media (prefers-color-scheme: dark) {
   :root {
-    color: #eee;
-    background: #000;
+    --theme-color: var(--theme-dark-color);
+    --theme-background: var(--theme-dark-background);
+
+    --theme-invert-color: var(--theme-light-color);
+    --theme-invert-background: var(--theme-light-background);
   }
 }
 

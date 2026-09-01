@@ -15,19 +15,20 @@ export const DataRegistry = Object.freeze({
 });
 
 export type DataRegistry = typeof DataRegistry;
-export type DataSource = keyof DataRegistry;
-export type DataKey<Key extends DataSource> = keyof DataRegistry[Key] & string;
+export type RegistrySource = keyof DataRegistry;
+export type DataId<Source extends RegistrySource> = keyof DataRegistry[Source] &
+  string;
 
-export function loadData<Source extends DataSource>(
+export function loadData<Source extends RegistrySource>(
   source: Source,
-  id: DataKey<Source>
-): DataRegistry[Source][DataKey<Source>] {
+  id: DataId<Source>
+): DataRegistry[Source][DataId<Source>] {
   const table = DataRegistry[source];
   if (!(id in table)) throw new Error(`Unknown ${source} id: ${id}`);
   return table[id];
 }
 
-export function allData<Source extends DataSource>(
+export function allData<Source extends RegistrySource>(
   source: Source
 ): DataRegistry[Source] {
   if (!(source in DataRegistry))
@@ -35,9 +36,17 @@ export function allData<Source extends DataSource>(
   return DataRegistry[source];
 }
 
-export type ProductId = DataKey<'products'>;
-export type SpriteId = DataKey<'sprites'>;
-export type MachineId = DataKey<'machines'>;
-export type LocationId = DataKey<'locations'>;
-export type WarehouseId = DataKey<'warehouses'>;
-export type SlotId = DataKey<'slots'>;
+export function allIds<Source extends RegistrySource>(
+  source: Source
+): DataId<Source>[] {
+  if (!(source in DataRegistry))
+    throw new Error(`Unknown data source: ${source}`);
+  return Object.keys(DataRegistry[source]) as DataId<Source>[];
+}
+
+export type ProductId = DataId<'products'>;
+export type SpriteId = DataId<'sprites'>;
+export type MachineId = DataId<'machines'>;
+export type LocationId = DataId<'locations'>;
+export type WarehouseId = DataId<'warehouses'>;
+export type SlotId = DataId<'slots'>;

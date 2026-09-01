@@ -1,8 +1,6 @@
-import { World } from '@jakeklassen/ecs';
-import { spawnPlayer } from './factories/Player-factory.js';
+import { spawnGame } from './factories/Game-factory.js';
 
-export const game = new World();
-export const player = spawnPlayer(game);
+export const game = spawnGame();
 
 export type Listener = () => void;
 const listeners = new Set<Listener>();
@@ -10,6 +8,10 @@ const listeners = new Set<Listener>();
 export function subscribeToGame(listener: Listener) {
   listeners.add(listener);
   return () => listeners.delete(listener);
+}
+
+export function notifyListeners() {
+  listeners.forEach((listener) => listener());
 }
 
 let lastTick = performance.now();
@@ -21,7 +23,7 @@ function tick() {
   lastTick = now;
   game.update(dt);
   listeners.forEach((listener) => listener());
-
+  notifyListeners();
   rafId = requestAnimationFrame(tick);
 }
 

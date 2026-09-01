@@ -15,7 +15,7 @@ export function Game() {
 
   return (
     <GameContext.Provider value={game}>
-      <Flex fit clip>
+      <Flex fit clip pad>
         <Flex horizontal gap type="section">
           <Flex center>Clock</Flex>
           <Flex fit>
@@ -34,9 +34,21 @@ export function Game() {
               onChange={setCurrentView}
               renderItem={({ viewId, view, isActive, select }) => (
                 <Flex fit type="li" key={viewId}>
-                  <Flex pad key={viewId} type="button" onClick={select}>
-                    {view.name}
-                  </Flex>
+                  {isActive ? (
+                    <Flex pad center key={viewId} theme="invert">
+                      {view.name}
+                    </Flex>
+                  ) : (
+                    <Flex
+                      pad
+                      center
+                      key={viewId}
+                      type="button"
+                      onClick={select}
+                    >
+                      {view.name}
+                    </Flex>
+                  )}
                 </Flex>
               )}
             />

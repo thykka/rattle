@@ -39,9 +39,15 @@ export function ShopView() {
           onChange={setCurrentView}
           renderItem={({ viewId: itemId, view, isActive, select }) => (
             <Flex fit type="li" key={itemId}>
-              <Flex pad type="button" onClick={select}>
-                {view.name}
-              </Flex>
+              {isActive ? (
+                <Flex pad center theme="invert">
+                  {view.name}
+                </Flex>
+              ) : (
+                <Flex pad center type="button" onClick={select}>
+                  {view.name}
+                </Flex>
+              )}
             </Flex>
           )}
         />

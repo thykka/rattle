@@ -1,3 +1,14 @@
 {
-  "alley": {}
+  "gasStation": {
+    "machinesMax": 1,
+    "unlockCost": 0
+  },
+  "convenienceStore": {
+    "machinesMax": 2,
+    "unlockCost": 100
+  },
+  "officeKitchen": {
+    "machinesMax": 1,
+    "unlockCost": 200
+  }
 }

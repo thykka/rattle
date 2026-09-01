@@ -32,6 +32,13 @@
   justify-content: center;
 }
 
+.verticalCenter:not(.horizontal) {
+  justify-content: center;
+}
+.verticalCenter.horizontal {
+  align-items: center;
+}
+
 .clip {
   overflow: hidden;
 }
@@ -40,3 +47,12 @@
   overflow: auto;
 }
 
+.theme-default {
+  background-color: transparent;
+  color: currentColor;
+}
+
+.theme-invert {
+  color: var(--theme-invert-color);
+  background-color: var(--theme-invert-background);
+}
