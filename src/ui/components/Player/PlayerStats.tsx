@@ -8,8 +8,8 @@ export function PlayerStats() {
   const name = components.get(Name).text;
   const money = components.get(Money).value;
   return (
-    <Flex horizontal>
-      <Flex pad fit type="h2">
+    <Flex horizontal fit>
+      <Flex pad fit verticalCenter type="h2">
         {name}
       </Flex>
       <Flex center type="span">

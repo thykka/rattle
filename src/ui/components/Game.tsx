@@ -18,7 +18,10 @@ export function Game() {
       <Flex fit clip pad>
         <Flex horizontal gap type="section">
           <Flex center>Clock</Flex>
-          <Flex fit>
+          <Flex horizontal fit>
+            <Flex pad type="h1">
+              Vending Mogul
+            </Flex>
             <PlayerStats />
           </Flex>
           <Flex center>Menu</Flex>

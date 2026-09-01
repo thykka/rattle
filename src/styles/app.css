@@ -1,6 +1,6 @@
 :root {
   --unit: 1rem;
-  --unit-spacing: calc(2 * var(--unit));
+  --unit-spacing: calc(1 * var(--unit));
 
   --theme-light-color: #111;
   --theme-light-background: #eee;
