@@ -1,11 +1,10 @@
 import { System, World } from '@jakeklassen/ecs';
-import { ButtonAction } from '../components/ButtonAction.js';
-
-export const KnownActions = {
-  'move-money': {
-    fn: (world: World) => {},
-  },
-} as const;
+import { Action } from '../components/Action';
+import { UnlockAction } from '../components/UnlockAction';
+import { UnlockPrice } from '../components/UnlockPrice';
+import { Player } from '../components/Player';
+import { Money } from '../components/Money';
+import { Locked } from '../components/Locked';
 
 export class ActionSystem extends System {
   constructor() {
@@ -13,11 +12,28 @@ export class ActionSystem extends System {
   }
 
   update(world: World, dt: number) {
-    for (const [entity, components] of world.view(ButtonAction)) {
-      const action = components.get(ButtonAction);
-      const actionData = KnownActions[action.actionId];
-      if (!actionData) continue;
-      actionData.fn(world);
+    this.updateUnlockActions(world);
+    for (const [entity, components] of world.view(Action)) {
+      world.deleteEntity(entity);
+    }
+  }
+
+  updateUnlockActions(world: World) {
+    const [[player, playerComponents]] = world.view(Player);
+    const playerMoney = playerComponents.get(Money);
+
+    for (const [actionEntity, actionComponents] of world.view(
+      Action,
+      UnlockAction
+    )) {
+      const { target } = actionComponents.get(UnlockAction);
+      const targetComponents = world.getEntityComponents(target);
+      const targetUnlockPrice = targetComponents.get(UnlockPrice);
+
+      if (playerMoney.value >= targetUnlockPrice.value) {
+        playerMoney.value -= targetUnlockPrice.value;
+        world.removeEntityComponents(target, Locked);
+      }
     }
   }
 }

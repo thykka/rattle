@@ -2,7 +2,7 @@ export default {
   testEnvironment: 'node',
   preset: 'ts-jest/presets/default-esm',
   transform: {
-    '^.+\\.m?[tj]s?$': ['ts-jest', { useESM: true }],
+    '^.+\\.(m?[tj]s?)$': ['ts-jest', { useESM: true }],
   },
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.(m)?js$': '$1',
