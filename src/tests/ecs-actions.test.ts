@@ -10,6 +10,7 @@ import { spawnPlayer } from '../factories/Player-factory';
 describe('Actions', () => {
   it('should remove an action entity when action is completed', () => {
     const world = new World();
+    spawnPlayer(world);
     const action = world.createEntity();
     world.addEntityComponents(action, new Action());
     world.addSystem(new ActionSystem());
@@ -35,7 +36,8 @@ describe('UnlockAction', () => {
 
     world.addSystem(new ActionSystem());
 
-    const action = spawnUnlockAction(world, location);
+    spawnUnlockAction(world, location);
+
     world.update(0);
 
     const locked2 = components.get(Locked);
